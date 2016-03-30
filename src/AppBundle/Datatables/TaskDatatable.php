@@ -13,10 +13,16 @@ use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 class TaskDatatable extends AbstractDatatableView
 {
     /** @var string */
-    private $resultRoute;
+    protected $resultRoute;
 
     /** @var boolean */
-    private $lockOnly;
+    protected $lockOnly;
+
+    /** @var string */
+    protected $role;
+
+    /** @var array */
+    protected $actions = [];
 
     /**
      * @param $path
@@ -24,6 +30,11 @@ class TaskDatatable extends AbstractDatatableView
     public function setResultRoute($path)
     {
         $this->resultRoute = $path;
+    }
+
+    public function setRole($role)
+    {
+        $this->role = $role;
     }
 
     public function showLockOnly()
@@ -65,7 +76,7 @@ class TaskDatatable extends AbstractDatatableView
             'dom'                           => 'lfrtip',
             'length_menu'                   => [10, 25, 50, 100],
             'order_classes'                 => true,
-            'order'                         => [[0, 'asc']],
+            'order'                         => [[0, 'desc']],
             'order_multi'                   => true,
             'page_length'                   => 10,
             'paging_type'                   => Style::FULL_NUMBERS_PAGINATION,
@@ -140,16 +151,23 @@ class TaskDatatable extends AbstractDatatableView
 
         } else {
 
+            if ($this->role == 'contributor') {
+                $editRoute = 'task_entry';
+                $editLabel = 'Entry';
+            } else {
+                $editRoute = 'task_update';
+                $editLabel = 'Edit';
+            }
+
             $actions[] = [
-                'route'            => 'task_update',
+                'route'            => $editRoute,
                 'route_parameters' => [
                     'id' => 'id'
                 ],
-                'label'            => $this->translator->trans('datatables.actions.edit'),
+                'label'            => $editLabel,
                 'icon'             => 'fa fa-edit',
                 'attributes'       => [
                     'rel'   => 'tooltip',
-                    'title' => $this->translator->trans('datatables.actions.edit'),
                     'class' => 'btn btn-xs',
                     'role'  => 'button'
                 ],

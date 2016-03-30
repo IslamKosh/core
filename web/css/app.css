@@ -8,5 +8,17 @@
 /* Elements customization */
 
 textarea.input-lg {
-    font-size: 18px;
+    font-size: 14px;
+}
+
+/* Thumbnails */
+.thumb-box {
+    display: inline-block !important;
+    position: relative !important;
+    overflow: hidden;
+    text-align: center;
+}
+
+.thumb-box a:hover img {
+    opacity: 0.5;
 }

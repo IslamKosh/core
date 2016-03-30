@@ -5,8 +5,12 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Task;
 use AppBundle\Google\Drive;
 use Doctrine\ORM\QueryBuilder;
+use Sylius\Component\Resource\Event\ResourceEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class TaskController extends ResourceController
 {
@@ -69,6 +73,7 @@ class TaskController extends ResourceController
     {
         $datatable = $this->get('app.datatable.task');
         $datatable->setResultRoute('my_task_results');
+        $datatable->setRole('contributor');
         $datatable->buildDatatable();
 
         return $this->render('AppBundle:Task:index.html.twig', [
@@ -103,5 +108,41 @@ class TaskController extends ResourceController
         $this->getRepository()->lockTask($task, $this->getUser());
 
         return $this->redirectToRoute('task_update', ['id' => $task->getId()]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     */
+    public function entryAction(Request $request)
+    {
+        $this->isGrantedOr403('update');
+
+        $resource = $this->findOr404($request);
+        $form     = $this->getForm($resource);
+
+        if (in_array($request->getMethod(), array('POST', 'PUT', 'PATCH')) && $form->submit($request, !$request->isMethod('PATCH'))->isValid()) {
+
+            $this->domainManager->update($resource);
+
+            if ($resource instanceof ResourceEvent) {
+                return $this->redirectHandler->redirectToIndex();
+            }
+
+            return $this->redirectHandler->redirectTo($resource);
+
+        }
+
+        $view = $this
+            ->view()
+            ->setTemplate('AppBundle:Task:entry.html.twig')
+            ->setData(array(
+                $this->config->getResourceName() => $resource,
+                'form'                           => $form->createView(),
+            ))
+        ;
+
+        return $this->handleView($view);
     }
 }

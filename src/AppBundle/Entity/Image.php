@@ -164,4 +164,13 @@ class Image
 
         return $link;
     }
+
+    public function getThumbnailLink($size = 'w320')
+    {
+        $link = trim($this->getUrl());
+        $link = str_replace('https://drive.google.com/file/d/', 'https://drive.google.com/thumbnail?authuser=0&sz=' . $size . '&id=', $link);
+        $link = str_replace('/view?usp=sharing', '', $link);
+
+        return $link;
+    }
 }

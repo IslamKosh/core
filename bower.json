@@ -21,6 +21,8 @@
         "font-awesome": "fontawesome#~4.5.0",
         "datatables": "~1.10.11",
         "AdminLTE": "admin-lte#~2.3.2",
-        "moment": "~2.11.2"
+        "moment": "~2.11.2",
+        "bootstrap-markdown": "~2.10.0",
+        "markdown": "~0.5.0"
     }
 }

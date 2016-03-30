@@ -85,4 +85,18 @@ class ImageRepository extends EntityRepository
 
         $this->getEntityManager()->flush();
     }
+
+    public function updateImage($data)
+    {
+        /** @var Image $image */
+        $image = $this->find($data['image_id']);
+
+        // Update
+        $image->setContent($data['image_content']);
+
+        $this->getEntityManager()->persist($image);
+        $this->getEntityManager()->flush();
+
+        return $image;
+    }
 }

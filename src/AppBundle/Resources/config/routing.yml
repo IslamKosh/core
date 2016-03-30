@@ -80,6 +80,18 @@ task_update:
         _controller: app.controller.task:updateAction
         _sylius:
             form: app_task_edit
+            redirect: task_show
+
+task_entry:
+    path: /tasks/{id}/entry
+    methods: [GET, PUT]
+    options:
+        expose: true
+    defaults:
+        _controller: app.controller.task:entryAction
+        _sylius:
+            form: app_task_edit
+            redirect: task_show
 
 task_delete:
     path: /tasks/{id}
@@ -101,4 +113,4 @@ image_update:
     path: /images/update
     methods: [POST]
     defaults:
-        _controller: AppBundle:Image:updateTaskImages
+        _controller: AppBundle:Image:updateImage
