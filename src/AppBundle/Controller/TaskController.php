@@ -107,7 +107,7 @@ class TaskController extends ResourceController
 
         $this->getRepository()->lockTask($task, $this->getUser());
 
-        return $this->redirectToRoute('task_update', ['id' => $task->getId()]);
+        return $this->redirectToRoute('task_entry', ['id' => $task->getId()]);
     }
 
     /**
