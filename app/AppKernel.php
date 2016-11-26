@@ -41,6 +41,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new KPhoen\DoctrineStateMachineBundle\KPhoenDoctrineStateMachineBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
 
             new AppBundle\AppBundle(),
         );
